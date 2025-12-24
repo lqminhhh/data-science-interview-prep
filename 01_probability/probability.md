@@ -33,14 +33,16 @@ Applications:
 ## C. Counting
 
 If the order of selection of the $n$ items being counted $k$ at a time matters, then the method for counting possible permutations is employed:
-    $$
-    n * (n - 1) * ... * (n - k + 1) = \frac{n!}{(n - k)!}
-    $$
+
+$$
+n * (n - 1) * ... * (n - k + 1) = \frac{n!}{(n - k)!}
+$$
 
 If order of selection does not matter, then the technique to count possible number of combinations is relevant:
-    $$
-    \binom{n}{k} = \frac{n!}{k!(n-k)!}
-    $$
+
+$$
+\binom{n}{k} = \frac{n!}{k!(n-k)!}
+$$
 
 ## D. Random Variables
 
@@ -74,14 +76,17 @@ $$
 ### 3. Expectation & Variance
 
 #### Expectation
+
 $$
 E[X] = \sum x p(x) \quad \text{or} \quad \int x f(x)\,dx
 $$
 
 **Linearity of expectation**:
+
 $$
 E[aX+bY]=aE[X]+bE[Y]
 $$
+
 (holds even if dependent)
 
 #### Variance
@@ -94,11 +99,13 @@ Measures spread / uncertainty.
 ### 4. Independence
 
 $X, Y$ independent if:
+
 $$
 P(X,Y)=P(X)P(Y)
 $$
 
 If independent:
+
 $$
 E[XY]=E[X]E[Y]
 $$
