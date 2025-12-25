@@ -17,13 +17,17 @@ Welcome to this Data Science Interview Prep Repository. This repository is a col
 
 ## II. Projects 🚀
 
-|Index|Projects Name|Industry|Skills|Description|Target Roles|
-|---|---|---|---|---|---|
-|1|[Allstate Claim Cost Prediction]()|Insurance / FinTech|XGBoost, EDA, Predictive Modeling, Sklearn|Developed ML models on 180K+ claims to predict early claim costs|Data Scientist|
-|2|[Branch Risk Forecasting](https://github.com/lqminhhh/branch-risk-forecasting)|Banking/Finance|Survival Analysis, XGBoost, Classification||Data Scientist|
-|3|||||Data Analyst|
-|4|[Pizza Sales Dashboard](https://github.com/lqminhhh/pizza-sales-dashboard)||Tableau, SQL||Business Intelligence|
-|5|||||Data Engineer|
-|6|||||Data Scientist|
-|7|||||AI Engineer|
+|Index|Projects Name|Industry|Tech Stack|Skills|Description|Target Roles|
+|---|---|---|---|---|---|---|
+|1|[Allstate Claim Cost Prediction]()|Insurance / FinTech|Python (`Sklearn`, `Pandas`, `Numpy`, `Tensorflow`)|EDA, Regression, Boosting, Random Forest, GLM|Developed ML models on 180K+ claims to predict early claim costs|Data Scientist|
+|2|[Branch Risk Forecasting](https://github.com/lqminhhh/branch-risk-forecasting)|Banking/Finance|R (`dplyr`, `caret`, `ggplot2`), Python|Survival Analysis, Boosting, Classification||Data Scientist|
+|3|[GiveSmart: Predictive Donor Analytics](https://github.com/lqminhhh/predictive-donor-analytics)|Non-profit|Python, Tableau|OLS Regression, Clustering, RFM Analysis, Survival Analysis, Time Series (SARIMA, STL)||Data Scientist|
+|4|[Pizza Sales Dashboard](https://github.com/lqminhhh/pizza-sales-dashboard)||Tableau, SQL|||Business Intelligence|
+|5|[Stock Dashboard Optimizer](https://github.com/lqminhhh/stock-dashboard-optimizer)|Finance|Python (`Pandas`, `yfinance`,`cvxpy`), Tableau, AWS S3, Streamlit|Modern Portfolio Theory||BI Engineer|
+|6||||||BI Engineer|
+|7||||||AI Engineer|
+
+## III. Contact 📫
+
+Feel free to contact me via le_m2@denison.edu or my [LinkedIn](https://www.linkedin.com/in/lqminhh/) if you want to find someone who want to do a mock interview, or just want to collaborate to work on some data projects!
 
