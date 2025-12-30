@@ -88,3 +88,45 @@ A test statistic is a numerical summary designed for the purpose of determining 
 | ANOVA | Compare means across groups |
 | KS test | Distribution comparison |
 
+### p-values and Confidence Intervals
+
+- **p-value:** the probability of observing the value of the calculated test statistic under the null hypothesis assumptions. Common level of significance: 0.05
+
+- **Confidence Interval:** A range of values that, if a large sample were taken, would contain the parameter value of interest $(1 - \alpha)\%$ of the time. The general form for the confidence interval around the population mean looks like:
+
+$$
+\mu \pm z_{a/1}\frac{\sigma}{\sqrt{n}}
+$$
+
+### Type I and II Errors
+
+- **Type I ("False Positive")**: When one rejects the null hypothesis when it is correct
+- **Type II ("False Negative")**: When the null hypothesis is not rejected when it is incorrect.
+
+Usually, $1-\alpha$ is referred to as the confidence level, whereas $1 - \beta$ is referred to as the power. If you plot the sample size versus power, generally you should see a larger sample size corresponding to a larger power. It can be useful to look at power in order to gauge the sample size needed for detecting a significant effect. Generally, tests are set up in such a way as to have both $1 - \alpha$ and $1 - \beta$ relatively high (at $0.95$ and $0.8$, respectively)
+
+**Bonferroni correction:** A method to make sure that the overall rate of false positives is controlled within a multiple testing framework. In testing multiple hypotheses, it is possible that if you ran many experiments, you would see a statistically significant outcome at least one. However, a more desirable outcome is to have the overall $\alpha$  of the $100$ tests be $0.05$, and this can be done by setting the new $\alpha$ to $\alpha / n$, where $n$ is the number of hypothesis tests.
+
+## E. MLE and MAP
+
+In maximum likelihood estimation (MLE), the goal is to estimate the most likely parameters given a likelihood function: $\theta_{MLE} = \text{arg max }L(\theta)$, where $L(\theta) = f_n(x_1...x_n|\theta)$.
+
+Since the values of $X$ are assumed to be i.i.d., then the likelihood function becomes the following:
+
+$$
+L(\theta) = \prod_{i = 1}^{n}f(x_i|\theta)
+$$
+
+The natural log of $L(\theta)$ is then taken prior to calculating the maximum; since log is monotonically increasing function, maximizing the log-likelihood log $L(\theta)$ is equivalent to maximizing the likelihood:
+
+$$
+\text{log }L(\theta) = \prod_{i = 1}^{n}\text{log }f(x_i|\theta)
+$$
+
+Anotheer way of fitting paramters is through maximum a posteriori estimation (MAP), which assumes a "prior distribution:"
+
+$$
+\theta_{MAP} = \text{arg max }g(\theta) f(x_1...x_n|\theta)
+$$
+
+where the similar log-likelihood is again employed, and $g(\theta)$ is a density function of $\theta$.
