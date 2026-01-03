@@ -36,4 +36,5 @@ yarn-error.log*
 .pnpm-debug.log*
 coverage/
 report/
-.cache/   
+.cache/ 
+/images/*
