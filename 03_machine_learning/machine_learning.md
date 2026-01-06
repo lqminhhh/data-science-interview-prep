@@ -113,4 +113,117 @@ where $\lambda > 0$ is the tuning parameter, to be determined seperately.
 
 ### Interpretability and Explainability
 
+- Linear models: have weights which can be visualized and analyzed to interpret the decision making
+- SHAPP (SHapley Additive exPlanation): uses "Shapley" values to denote the average marginal contribution of a feature over all possible combinations of inputs.
+- LIME (Local Interpretable Model-agnostic Explanations): uses sparse linear models built around various predictions to understand how any model performs in that local vicinity
+
 ## E. Model Training
+
+### Cross-Validation
+
+Idea: Running the algorithm on subsamples of the training data and evaluating model performance on the portion of the data that was excluded from the subsample. This process is repeated many times for the different subsamples, and the results are combined at the end.
+
+One popular way to do cross-validation is called *k-fold cross-validation*. The process is as follows:
+1. Randomly shuffle data into equally-sized blocks (folds).
+2. For each fold $k$, train the model on all data except for fold $i$, and evaluate the validation error using block $i$.
+3. Average the $k$ validation errors from step 2 to get an estimate of the true error.
+
+![alt text](../images/image3.png)
+
+Another form is *leave-one-out cross-validation*. LOOCV is a special case of *k-fold* cross validation where $k$ is equal to the size of the dataset ($n$). That is, it is where the model is testing on every single data point during the cross-validation.
+
+### Bootstrapping and Bagging
+
+- Bootstrapping: drawing observations from a large data sample repeatedly (sampling with replacement) and estimating some quantity of a population by average estimates from multiple smaller samples. Use cases: small dataset, class imbalance.
+
+- Ensemble learning: the process of averaging estimates from many smaller models into a main model. Each individual model is produced using a particular sample from the process. This process of bootstrap aggregation is also known as *bagging*.
+
+### Hyperparameter Tuning
+
+- Grid search: forming a grid that is the Cartesian product of those parameters and then sequentially trying all such combinations and seeing which yields the best results.
+
+- Random search: define a distribution for each parameter and randomly sample from the joint distribution over all parameters.
+
+### Training Times and Learning Curves
+
+- Training times: Another facter to consider when it comes to model selection. While you can always train more complex models that might achieve marginally higher model performance metrics, the trade-off versus increased resource usage and training time might make such a decision suboptimal.
+
+- Learning curvse: plots of model learning performance over time. The y-axis is some metric of learning (e.g. classification accuracy), and the x-axis is experience (time).
+
+![alt text](../images/image4.png)
+
+## F. Linear Regression
+
+Linear regression is a form of *supervised learning*, where a model is trained on labeled input data. The goal is to estimate a function $f(x)$, such that each feature has a linear relationship to the target variable $y$, or:
+
+$$
+y = X \beta
+$$
+
+where $X$ is a matrix of predictor variables and $\beta$ is a vector of parameters that determines the weight of each variable in predicting the target variable.
+
+### Evaluating Linear Regression
+
+Evaluation of this model is built on the concept of *residual*: the distance between what the model predicted versus the actual value. Linear regression estimates $\beta$ by minimizing the residual sum of squares (RSS), which is given by the following:
+
+$$
+RSS(\beta) = (y - X \beta)^T(y - X \beta)
+$$
+
+Two other sum of squares concepts to know besides the RSS are the total sum of squares (TSS) and eplained sum of squares (ESS). The total sum of squares is the combined variation in the data (ESS + RSS). $R^2$, a popular metric for assessing good-ness-of-fit, is given by $R^2 = 1 - \frac{RSS}{TSS}$. It ramges between 0 and 1m and represents the proportion of variability in the data explained by the model.
+
+![alt text](../images/image5.png)
+
+Other prominent error metrics:
+- MSE (Mean squared error): mesaures the *variance* of the residuals -> penalizes larger errors more than MAE, making it more sensitive to outliers
+- MAE (Mean absolute error): measures the *average* of the residuals.
+
+### Subset Selection
+
+- Best subset selection: try eaach model with $k$ predictors, out of $p$ possible ones, where $k<p$. Then, you choose the best subset model using a regression metric like $R^2$ -> **Can be computationally infeasible as $p$ increases**
+- Stepwise selection: We aim to find a model with high $R^2$ and low RSS, while considering the number of predictors using metrics like AIC or adjusted $R^2$.
+    - Forward selection: start with an empty model and iteratively add the most useful predictor
+    - Backward selection: start with the full model and iteratively remove the least useful predictor.
+
+### Assumptions
+
+Four main assumptions to prevent erroneous results:
+- **Linearity:** The relationship between the feature set and the target variable is linear
+- **Homoscedasticity:** The variance of the residuals is constant.
+- **Independence:** All observations are independent of one another.
+- **Normality:** The distribution of $Y$ is assumed to be normal.
+
+### Avoid Linear Regression Pitfalls
+
+**Heteroscedasticity:** If the residuals of the residuals is not constant, then *heteroscedasticity* is most likely presented, meaning that the residuals are not identically distributed
+
+![alt text](../images/image6.png)
+
+Another useful diagnostic plot is the scale-location plot, which plots standardized residuals versus the fitted values. If the data shows heteroscedasticity, then you will not see a horizontal line with equally spread points.
+
+![alt text](../images/image7.png)
+
+**Normality:** We can test if the residuals are normally distributed through a QQ plot.
+
+![alt text](../images/image8.png)
+
+![alt text](../images/image9.png)
+
+**Outliers:** this can have an outsized impact on regression results. One of the popular method to check this is examining *Cook's distance*, which is the estimate of the influence of any given data point. It takes into account the residual and leverage (how far away the $X$ value differs from that of other observations) of every point.
+
+**Multicollinearity:** We can check this by examining the variance inflation factor (VIF), which quantifies how much the estimated coefficients are inflated when multicollinearity exists. Methods to address multicollinearity include removing the correlated variables, linearly combining the variables, or using PCA/PLS (partial least squares).
+
+**Confounding Variables**: Multicollinearity is an extreme case of *confounding*, which occurs when a variable (but not the main independent or dependent variables) affects the relationship between the independent and dependent variables. This can cause invalid correlations. Confounding can occur in many ways:
+- Selection bias: where the data are biased due to the way they were collected (e.g. group imbalance)
+- Omitted variable bias: occurs when important variables are omitted, resulting in a linear regression model that is biased and inconsistent. Omitted variables can stem from dataset generation issues or choices made during modeling.
+
+## G. Generalized Linear Models (GLMs)
+
+The GLM is a generalization of linear regression that allows for the residuals to not just be normally distributed. The three common components to any GLM are:
+
+|**Link Function**|**Systematic Component**|**Random Component**|
+|-|-|-|
+|$ln \lambda_i$|$=b_0 + b_1 x_i$|$+\epsilon$|
+|$y_i$|$\sim \text{Poisson}(\lambda_i)$||
+
+## H. Classification
