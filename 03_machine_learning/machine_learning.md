@@ -1,5 +1,7 @@
 # 🤖 Machine Learning
 
+## [Home](https://github.com/lqminhhh/data-science-interview-prep/blob/main/README.md)
+
 ## A. What to Expect for ML Interview Questions:
 
 - **Conceptual:** Do you have a strong theoretical ML background?
@@ -226,4 +228,130 @@ The GLM is a generalization of linear regression that allows for the residuals t
 |$ln \lambda_i$|$=b_0 + b_1 x_i$|$+\epsilon$|
 |$y_i$|$\sim \text{Poisson}(\lambda_i)$||
 
+- **Random Component:** is the distribution of the error term, i.e., normal distribution for linear regression.
+- **Systematic Component:** consists of the explanatory variables, i.e., the predictors combined in a linear combination.
+- **Link function:** is the link between the random and system components, i.e., a linear regression, logit regression, etc.
+
+Note that in GLMs, the response variable is still a linear combination of weights and predictors.
+
 ## H. Classification
+
+### General Framework
+
+The goal is to assign a given data point to one of $K$ possible classes instead of calculating a continuous value (as in regression). The two types of classification models are *generative models* and *discriminative models*. Generative models deal with the joint distribution of $X$ and $Y$, which is defined as follows:
+
+$$
+p(X, T) = p(Y|X)p(X)
+$$
+
+Maximizing a posterior probability distribution produces decision boundaries between classes where the resulting posterior probability is equivalent. The second type of model is discriminative. It directly determines a decision boundary by choosing the class that maximizes the probability:
+
+$$
+\hat{y} = \text{arg max}_k p(Y=k|x)
+$$
+
+Thus, both methods choose a predicted class that maximizes the posterior probability distribution; the difference is simply the approach.
+
+### Evaluating Classifiers
+
+**Confusion Matrix**: When building a classifier, we want to minimize the number of misclassified observations, which in binary cases can be termed false positives and false negatives. In a *false positive*, the model incorrectly predicts that an instance belongs to the positive class. For the cancer detection example, a false positive would be classifying an individual as having cancer, when in reality, the person does not have it. On
+the other hand, a *false negative* occurs when the model incorrectly produces a negative class. In the cancer diagnostic case, this would mean saying a person doesn't have cancer, when in fact they do.
+
+A *confusion matrix* helps organize and visualize this information. Each row represents the actual number of observations in a class, and each column represents the number of observations predicted as belonging to a class.
+
+![alt text](../images/image10.png)
+
+- **Precision:** The actual positive proportion of observations that were predicted positive by the classifier.
+- **Recall (Sensitivity):** is the percentage of total positive cases captured, out of all positive cases.
+
+In real-world modeling, there's a natural trade-off between optimizing for precision or recall. For example, having high recall - catching most people who have cancer - ends up saving the lives of some people with cancer. However, this often leads to misdiagnosing others who didn't truly have cancer, which subjects healthy people to costly and dangerous treatments like chemotherapy for a cancer they never had. On the flip side, having high precision means being confident that when the diagnostic comes back positive, the person really has cancer. However, this often means missing some people who tryly have the disease. These patients with missed diagnoses may gain a false sense of security, and their cancer, left unchecked, could lead to fatal outcomes. In cases where both precision and recall are equally important, you can optimize the *F1 score*: the harmonic mean of precision and recall:
+
+$$
+F_1 = 2 * \frac{precision * recall}{precision + recall}
+$$
+
+### Visualizing Classifier Performance
+
+The receiver operating characteristic (ROC) curve plots the true positive rate versus the false positive rate for various thresholds. The area under the curve (AUC) measures how well the classifier separates classes. The AUC of the ROC curve is between 0 and 1, and a higher number means the model performs better in separating classes.
+
+![alt text](../images/image11.png)
+
+## I. Logistic Regression
+
+In logistic regression, a linear output is converted into a probability between 0 and 1 using the sigmoid function:
+
+$$
+S(x) = \frac{1}{1 + e^{-X\beta}}
+$$
+
+In the equation above, $X$ is the set of predictor features and $\beta$ is the corresponding vector of weights. Computing $S(x)$ above produces a probability that indicates if an observation should be classified as a "1" (if the calculated probability is at least 0.5), and a "0" otherwise.
+
+$$
+P(\hat{Y}=1|X) = S(X\beta)
+$$
+
+![alt text](../images/image12.png)
+
+The loss function for logistic regression, also known as log-loss, is formulated as follows:
+
+$$
+L(\omega) = \sum_{i = 1}^n y_i log\left(\frac{1}{S(X\beta)}\right) + (1 - y_i)log\left(\frac{1}{1 - S(X\beta)}\right)
+$$
+
+Note that in cases when more than two outcome classes exist, softmax regression is a commonly used technique that generalizes logistic regression.
+
+## J. Naive Bayes
+
+Naive Bayes classifiers require only a small amount of training data to estimate the necessary parameters. They can be extremely fast compared to more sophisticated methods (such as support vector machines). 
+
+Naive Bayes use Bayes' rule and a set of conditional independence assumptions in order to learn $P(Y|X)$. There are two assumptions:
+
+1. It assumes each $X_i$ is independent of any other $X_j$ gievn $Y$ for any pair of features $X_i$ and $X_j$.
+2. It assumes each feature is given the same weight.
+
+The decoupling of the class conditional feature distributions means that each distribution can be independently estimated as a one-dimensional distribution. That is, we have the following:
+
+$$
+P(X_1...X_n|Y) = \prod_{i = 1}^n P(X_i|Y)
+$$
+
+Using the conditional independence assumption, and then applying Bayes' theorem, the classification rule becomes:
+
+$$
+\hat{y} = arg max_{y_i}P(Y = y_i) \prod_{j} P(X_j|Y = y_i)
+$$
+
+To understand the beauty of Naive Bayes, recall that for any ML model having $k$ features, there are $2^k$ possible feature interactions (the correlations between them all). Due to the large number of feature interactions, typically you would need $2^k$ data points for a high-performing model. However, due to the conditional independence assumption in Naive Bayes, there only need to be $k$ data points, which removes this problem.
+
+For text classification (e.g. classifying spam, sentiment analysis), this assumption is convenient since there are manty predictors (words) that are generally independent of one another.
+
+## K. Support Vector Machines (SVMs)
+
+The goal of SVM is to form a hyperplane that linearly separates the training data. Specifically, it aims to maximize the margin, which is the minimum distance from the decision boundary to any training point. The points closest
+to the hyperplane are called the support vectors. Note that the decision boundaries for SVMs can be nonlinear, which is unlike that of logistic regression, for example.
+
+## L. Decision Trees
+
+## M. Entropy
+
+## N. Random Forests
+
+## O. Boosting
+
+## P. Dimensionality Reduction
+
+### Principle Components Analysis
+
+## Q. Clustering
+
+### K-Means Clustering
+
+### Hierarchial Clustering
+
+### Gaussian Mixture Model (GMM)
+
+## R. Neural Networks
+
+## S. Reinforcement Learning
+
+## T. The End-to-End ML Workflow
