@@ -330,19 +330,69 @@ For text classification (e.g. classifying spam, sentiment analysis), this assump
 The goal of SVM is to form a hyperplane that linearly separates the training data. Specifically, it aims to maximize the margin, which is the minimum distance from the decision boundary to any training point. The points closest
 to the hyperplane are called the support vectors. Note that the decision boundaries for SVMs can be nonlinear, which is unlike that of logistic regression, for example.
 
+![alt text](../images/image13.png)
+
+It's easy to visualize how a line can be found that separates the points correctly into their two classes. In practice, splitting the points isn't that straightforward. Thus, SVMs rely on a kernel to transform data into a higherdimensional space, where it then finds the hyperplane that best separates the points. The image below visualizes this kernel transformation:
+
+![alt text](../images/image14.png)
+
+Mathematically, the kernel generalizes the dot product to a higher dimension:
+
+$$
+k(x, y) = \phi(x)^T \phi(y)
+$$
+
+The RBF (radial basis function) and Gaussian kernels are the two most popular kernels used in practice. The general rule of thumb for this: for linear problems, use a linear kernel, and for nonlinear problems, use a nonlinear kernel like RBF. SVMs can be viewed as a kernelized form of ridge regression because they modify the loss function employed in the ridge regression.
+
+SVMs work well in high-dimensional spaces (a large number of dimensions vs the number of data points) or when a clear hyperplane divides the points. Conversely, SVMs don't work well on enormous data sets, since computational complexity is high, or when the target classes overlap and there is no clean separation. -> Use SVMs if you have nonlinear decision boundaries, and NOT use if interpretability is important.
+
 ## L. Decision Trees
 
-## M. Entropy
+### Training
 
-## N. Random Forests
+A decision tree is a model that can be represented in a treelike form determined by binary splits made in the feature space and resulting in various leaf nodes, each with a different prediction. Trees are trained in a greedy and recursive fashion, starting at a root node and subsequently proceeding through a series of binary splits in features (i.e., variables) that lead to minimal error in the classification of observations.
 
-## O. Boosting
+### Entropy
 
-## P. Dimensionality Reduction
+The entropy of a random variable $Y$ quantifies the uncertainty in $Y$. For a discrete variable $Y$ (assuming $k$ states) it is stated as follows:
 
-### Principle Components Analysis
+$$
+H(Y) = - \sum_{i = 1}^k P(y = k)logP(Y = k)
+$$
 
-## Q. Clustering
+For example, for a simple Bernoulli random variable, this quantity is highest when $p = 0.5$ and lowest when $p = 0$ or $p = 1$, a behavior that aligns intuitively with its definition since if $p = 0$ or $1$, then there is no uncertainty with respect to the result. Generally, if a random variable has high entropy, its distribution is closer to uniform than a skewed one. There are many measures of entropy - in practice, the Gini index is commonly used for decision trees.
+
+In the context of decision trees, consider an arbitrary split. We have $H(Y)$ from the initial training labels and assume that we have some features $X$ on which we want to split. We can characterrize the reduction in uncertainty given by the feature $X$, known as information gain, which can be formulated as follows:
+
+$$
+IG(Y, X) = H(Y) - H(Y|X)
+$$
+
+The larger $IG(Y, X)$ is, the higher the reduction in uncertainty in $Y$ by splitting on $X$. Therefore, the general process assesses all features in consideration and chooses the feature that maximizes this information gain, then recursively repeats the process on the two resulting branches.
+
+## M. Random Forests
+
+Typically, an individual decision tree may be prone to overfitting because a leaf node can be created for each observation. In practice, random forests yield better out-of-sample predictions than decision trees. A random forest is an ensemble method that utilize many decision trees, whose decisions it averages.
+
+Two characteristics of random forests:
+- Bagging: individual decision trees are fitted following each bootstrap sample and then averaged afterwards. It significantly reduces the variance of the random forest vs the variance of any individual decision trees.
+- A random subset of features is considered at each split, preventing the important features from always being present at the tops of individual trees.
+
+![alt text](../images/image15.png)
+
+## N. Boosting
+
+Boosting is a type of ensemble model that trains a sequence of "weak" models (such as small decision trees), where each on sequentially compensates for the weaknesses of the preceding models. Such weaknesses can be measured by the current model's error rate, and the relative error rates can be used to weigh which observations the next models should focus on. Each training point within a dataset is assigned a particular weight and is continually re-weighted in an iterative fashion such that points are mispredicted take on higher weights in each iteration. In this way, more emphasis is placed on points that are harder to predict. This can lead to overfitting if the data is especially noisy.
+
+One example is *AdaBoost* (adaptive boosting), which is a popular technique used to train a model based on tuning a variety of weak learners. That is, it sequentially combines decision trees with a single split, and then weights are uniformly set for all data points. At each iteration, data points are re-weighted accroding to whether each was classified correctly or incorrectly by a classifier. At the end, weighted predictions of each classifier are combined to obtain a final prediction.
+
+The generalized form of AdaBoost is called gradient boosting. A well-known form is called XGBoost (extreme gradient boosting). It is similar to AdaBoost, except that shortcomings of previous models are identified by the gradient rather than high weight points, and all classifiers have equal weights instead of having different weights.
+
+## O. Dimensionality Reduction
+
+### Principle Components Analysis (PCA)
+
+## P. Clustering
 
 ### K-Means Clustering
 
@@ -350,8 +400,8 @@ to the hyperplane are called the support vectors. Note that the decision boundar
 
 ### Gaussian Mixture Model (GMM)
 
-## R. Neural Networks
+## Q. Neural Networks
 
-## S. Reinforcement Learning
+## R. Reinforcement Learning
 
-## T. The End-to-End ML Workflow
+## S. The End-to-End ML Workflow
